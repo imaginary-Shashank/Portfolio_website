@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>— Portfolio</title>
+  <meta name="description" content="A personal portfolio — designer, developer, and creative thinker." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Portfolio" />
+  <meta property="og:description" content="A personal portfolio — designer, developer, and creative thinker." />
+
+  <!-- Fonts — Google Sans Flex (exact font from antigravity.google) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,ROND@8..144,-10..0,25..150,400..500,0..100&display=swap" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,ROND@8..144,-10..0,25..150,400..500,0..100&display=swap" />
+
+  <link rel="stylesheet" href="style.css?v=2" />
+</head>
+
+<body>
+
+  <!-- =================== HEADER / NAV =================== -->
+  <header class="site-header" id="site-header" role="banner">
+    <div class="header-inner">
+      <a href="/" class="wordmark" aria-label="Back to home">
+        <span class="wordmark-initials">—</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="https://www.linkedin.com/in/shashank-shekhar-11b6b822b/" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="0">LinkedIn</a>
+        <a href="https://github.com/imaginary-Shashank" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="1">GitHub</a>
+        <a href="mailto:0709shashank@gmail.com" class="nav-link" data-nav-index="2">Gmail</a>
+        <a href="https://www.instagram.com/susssshank/" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="3">Instagram</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =================== HERO =================== -->
+  <main id="main-content">
+    <section class="hero" aria-label="Introduction">
+
+      <!-- Molecular / background layer -->
+      <div class="hero-media" aria-hidden="true">
+        <!-- Benzene lattice canvas — driven by cursor in main.js -->
+        <canvas id="benzene-canvas" class="benzene-canvas" aria-hidden="true"></canvas>
+        <!-- Gradient overlay: top (nav legibility) + bottom (text legibility) -->
+        <div class="hero-overlay" aria-hidden="true"></div>
+      </div>
+
+      <!-- Identity layer -->
+      <div class="hero-identity">
+        <div class="hero-content">
+
+          <div class="hero-eyebrow" aria-hidden="true">
+            <span class="eyebrow-label">Portfolio</span>
+          </div>
+
+          <h1 class="hero-name">
+            <span class="name-line name-line--1">Shashank</span>
+            <span class="name-line name-line--2">Shekha<span class="orange-accent">r</span></span>
+          </h1>
+          <p class="hero-statement">
+            Building myself to build something meaningful<br class="br-desktop" />
+          </p>
+
+        </div>
+      </div>
+
+      <!-- Easter egg: About the graphic -->
+      <a href="https://winter.group.shef.ac.uk/orbitron/atomic_orbitals/7h/7h_electron_density_dots.html"
+        target="_blank" rel="noopener noreferrer" class="graphic-info-btn" aria-label="About the graphic">
+        <div class="graphic-info-track">
+          <div class="graphic-info-thumb"></div>
+        </div>
+        <span class="graphic-info-label">About the graphic</span>
+      </a>
+
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-track">
+          <div class="scroll-thumb"></div>
+        </div>
+        <span class="scroll-label">Scroll</span>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

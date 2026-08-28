@@ -1,0 +1,563 @@
+/* =======================================================
+   PORTFOLIO — style.css
+   Theme: white, editorial, Google Sans Flex
+   ======================================================= */
+
+/* ── Reset & Box Model ───────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Design Tokens ───────────────────────────────────── */
+:root {
+  /* Typography — Google Sans Flex (same as antigravity.google) */
+  --font: 'Google Sans Flex', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+
+  /* Color — black editorial palette */
+  --color-bg: #000000;
+  --color-surface: #0a0a0a;
+  --color-ink: #ffffff;
+  --color-ink-70: rgba(255, 255, 255, 0.70);
+  --color-ink-40: rgba(255, 255, 255, 0.40);
+  --color-ink-20: rgba(255, 255, 255, 0.20);
+  --color-ink-12: rgba(255, 255, 255, 0.12);
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+
+  /* Layout */
+  --page-padding-x: clamp(24px, 5vw, 72px);
+  --header-height: 72px;
+
+  /* Easing */
+  --ease-cinematic: cubic-bezier(0.22, 0.1, 0.36, 1);
+  --ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+/* ── Base ────────────────────────────────────────────── */
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font);
+  font-variation-settings: 'opsz' 16, 'wdth' 100, 'wght' 400, 'ROND' 50;
+  font-weight: 400;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* =======================================================
+   HEADER
+   ======================================================= */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  background: transparent;
+  transition: background 0.5s var(--ease-cinematic),
+    border-color 0.5s var(--ease-cinematic);
+  border-bottom: 1px solid transparent;
+}
+
+.site-header.is-scrolled {
+  background: rgba(0, 0, 0, 0.90);
+  -webkit-backdrop-filter: blur(16px) saturate(0.9);
+  backdrop-filter: blur(16px) saturate(0.9);
+  border-bottom-color: var(--color-ink-12);
+}
+
+.header-inner {
+  width: 100%;
+  padding-inline: var(--page-padding-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Wordmark */
+.wordmark {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-ink);
+  opacity: 0;
+  transition:
+    opacity 0.4s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+.wordmark:hover {
+  color: var(--color-ink-70);
+}
+
+.wordmark-initials {
+  font-family: var(--font);
+  font-variation-settings: 'opsz' 24, 'wdth' 100, 'wght' 400, 'ROND' 20, 'slnt' -8;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: block;
+}
+
+/* Nav */
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.nav-link {
+  font-family: var(--font);
+  font-variation-settings: 'opsz' 11, 'wdth' 100, 'wght' 400, 'ROND' 50;
+  font-size: 0.75rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink-40);
+  text-decoration: none;
+  opacity: 0;
+  transition:
+    color 0.3s var(--ease-out),
+    opacity 0.4s var(--ease-out);
+}
+
+.nav-link:hover,
+.nav-link.is-active {
+  color: var(--color-ink);
+}
+
+/* =======================================================
+   HERO
+   ======================================================= */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Canvas / Molecular layer ────────────────────────── */
+.hero-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-color: var(--color-bg);
+}
+
+.benzene-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Overlay — just a very subtle top edge for nav legibility, no bottom fade */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0) 14%);
+  pointer-events: none;
+}
+
+/* ── Identity layer ─────────────────────────────── */
+.hero-identity {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  padding-inline: var(--page-padding-x);
+  text-align: center;
+  /* No bottom anchor — flex centering handles vertical position */
+}
+
+.hero-content {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Eyebrow */
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: clamp(16px, 2vh, 28px);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.8s var(--ease-cinematic),
+    transform 0.8s var(--ease-cinematic);
+}
+
+.hero-eyebrow.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow-line {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--color-ink-20);
+  flex-shrink: 0;
+}
+
+.eyebrow-label {
+  font-family: var(--font);
+  font-variation-settings: 'opsz' 11, 'wdth' 100, 'wght' 400, 'ROND' 50;
+  font-size: 0.6875rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-ink-40);
+}
+
+/* Name / H1 */
+.hero-name {
+  display: block;
+  font-family: var(--font);
+  font-size: clamp(1.5rem, 3.75vw, 3.5rem);
+  line-height: 0.79;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  /* Absolute white */
+  margin-bottom: clamp(9px, 1.5vh, 18px);
+  overflow: hidden;
+}
+
+.name-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(110%);
+  transition:
+    opacity 0.9s var(--ease-cinematic),
+    transform 0.9s var(--ease-cinematic);
+}
+
+.name-line--1 {
+  transition-delay: 0.10s;
+  /* Slanted via variable font axis — matches Antigravity style */
+  font-variation-settings: 'opsz' 72, 'wdth' 108, 'wght' 400, 'ROND' 20, 'slnt' -8;
+  color: #a1a1a6;
+  /* Lighter grey */
+}
+
+.name-line--2 {
+  transition-delay: 0.22s;
+  font-variation-settings: 'opsz' 72, 'wdth' 108, 'wght' 400, 'ROND' 20, 'slnt' 0;
+  color: #ffffff;
+  /* Absolute white */
+}
+
+.orange-accent {
+  color: rgb(240, 115, 35); /* Match electron orange */
+}
+
+.name-line.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.name-line--2.is-visible {
+  transform: translate(0.045em, 0); /* Align and connect 'h' arch with 'h' stem */
+}
+
+/* Positioning statement */
+.hero-statement {
+  font-family: var(--font);
+  font-variation-settings: 'opsz' 16, 'wdth' 100, 'wght' 400, 'ROND' 50;
+  font-size: clamp(0.875rem, 1.35vw, 1.0625rem);
+  line-height: 1.7;
+  color: var(--color-ink-70);
+  max-width: 400px;
+  margin-inline: auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.9s var(--ease-cinematic) 0.4s,
+    transform 0.9s var(--ease-cinematic) 0.4s;
+}
+
+.hero-statement.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.br-desktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .br-desktop {
+    display: block;
+  }
+}
+
+/* =======================================================
+   SCROLL INDICATOR
+   ======================================================= */
+.scroll-indicator {
+  position: absolute;
+  bottom: clamp(var(--space-xl), 5vh, 56px);
+  right: var(--page-padding-x);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-cinematic) 0.9s;
+}
+
+.scroll-indicator.is-visible {
+  opacity: 1;
+}
+
+@media (max-width: 599px) {
+  .scroll-indicator {
+    display: none;
+  }
+}
+
+.scroll-track {
+  width: 1px;
+  height: 48px;
+  background: rgba(240, 115, 35, 0.20);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-thumb {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(240, 115, 35);
+  animation: scrollPulse 3.2s var(--ease-cinematic) infinite;
+  animation-delay: 1.2s;
+}
+
+@keyframes scrollPulse {
+  0% {
+    top: -100%;
+    opacity: 1;
+  }
+
+  72% {
+    top: 100%;
+    opacity: 0.7;
+  }
+
+  73% {
+    top: -100%;
+    opacity: 0;
+  }
+
+  100% {
+    top: -100%;
+    opacity: 0;
+  }
+}
+
+.scroll-label {
+  font-family: var(--font);
+  font-variation-settings: 'opsz' 10, 'wdth' 100, 'wght' 400, 'ROND' 50;
+  font-size: 0.5rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-40);
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+}
+
+/* =======================================================
+   EASTER EGG: ABOUT THE GRAPHIC (BOTTOM-LEFT)
+   ======================================================= */
+.graphic-info-btn {
+  position: absolute;
+  bottom: clamp(var(--space-xl), 5vh, 56px);
+  left: var(--page-padding-x);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-cinematic) 0.9s;
+}
+
+.graphic-info-btn.is-visible {
+  opacity: 1;
+}
+
+@media (max-width: 599px) {
+  .graphic-info-btn {
+    display: none;
+  }
+}
+
+.graphic-info-track {
+  width: 1px;
+  height: 48px;
+  background: var(--color-ink-12);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s var(--ease-out);
+}
+
+.graphic-info-thumb {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-ink-40);
+  animation: graphicPulse 3.2s var(--ease-cinematic) infinite;
+  animation-delay: 1.6s;
+  transition: background 0.3s var(--ease-out);
+}
+
+@keyframes graphicPulse {
+  0% {
+    top: -100%;
+    opacity: 1;
+  }
+
+  72% {
+    top: 100%;
+    opacity: 0.7;
+  }
+
+  73% {
+    top: -100%;
+    opacity: 0;
+  }
+
+  100% {
+    top: -100%;
+    opacity: 0;
+  }
+}
+
+.graphic-info-label {
+  font-family: var(--font);
+  font-variation-settings: 'opsz' 10, 'wdth' 100, 'wght' 400, 'ROND' 50;
+  font-size: 0.5rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-40);
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  transition: color 0.3s var(--ease-out);
+}
+
+/* Hover state: highlight with electron orange! */
+.graphic-info-btn:hover .graphic-info-label {
+  color: rgb(240, 115, 35);
+}
+
+.graphic-info-btn:hover .graphic-info-track {
+  background: rgba(240, 115, 35, 0.25);
+}
+
+.graphic-info-btn:hover .graphic-info-thumb {
+  background: rgb(240, 115, 35);
+}
+
+/* =======================================================
+   REDUCED MOTION
+   ======================================================= */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-eyebrow,
+  .name-line,
+  .hero-statement,
+  .scroll-indicator,
+  .wordmark,
+  .nav-link {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =======================================================
+   RESPONSIVE
+   ======================================================= */
+@media (max-width: 599px) {
+  :root {
+    --page-padding-x: 20px;
+    --header-height: 60px;
+  }
+
+  .site-nav {
+    gap: var(--space-lg);
+  }
+
+  .hero-name {
+    font-size: clamp(2.6rem, 13.5vw, 4.1rem);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1023px) {
+  .hero-name {
+    font-size: clamp(3.75rem, 9vw, 6rem);
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --page-padding-x: 96px;
+  }
+}
