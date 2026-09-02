@@ -28,7 +28,7 @@
   const AtomicOrbitalEngine = (function () {
 
     /* ── Configuration ─────────────────────────────────── */
-    const NUM_PARTICLES = 4200; // Rich quantum point cloud spanning full viewport
+    const NUM_PARTICLES = 2800; // Sparser quantum point cloud spanning full viewport
 
     // Palette: Slate Grey & Vibrant Orange
     const COLOR_GREY = { r: 110, g: 120, b: 135 }; // Slate grey (ref white/grey)
@@ -158,8 +158,18 @@
     /* ── Physics & Animation Update ────────────────────── */
 
     function update(t, dt) {
+      const scrollY = window.scrollY;
+      // Cap the scroll effect at 1 screen height so the atom doesn't vanish on the 3rd section
+      const scrollNorm = Math.min(scrollY / H, 1.0);
+
+      // Scroll-based transforms: "travelling away from the atom"
+      // We keep scale at 1.0 so electrons extend to full edges, 
+      // relying on center shift and alpha fade for the travel effect.
+      const scrollScale = 1.0;     
+      const scrollAlpha = Math.max(0.015, 1 - scrollNorm * 0.45); // Fade with distance
+
       const centerX = W * 0.5;
-      const centerY = H * 0.5;
+      const centerY = H * 0.5 - scrollY * 0.45;           // Atom center recedes upward
 
       // 1. Calculate cursor speed and smooth mouse position
       if (mouse.active) {
@@ -224,9 +234,9 @@
       for (let i = 0; i < numP; i++) {
         const p = particles[i];
 
-        // Base resting position centered on screen
-        const restX = centerX + p.relX;
-        const restY = centerY + p.relY;
+        // Base resting position — scaled by scroll (zoom-out effect)
+        const restX = centerX + p.relX * scrollScale;
+        const restY = centerY + p.relY * scrollScale;
 
         // --- A. Vibrational Motion ---
         const vibTime = t * p.vibFreq + p.vibPhase;
@@ -301,9 +311,9 @@
         const centerNorm = Math.min(1.0, centerDist / textZoneRadius);
         const centerSizeScale = 0.50 + 0.50 * Math.pow(centerNorm, 1.4);
 
-        // Target Alpha: dormant (0.135) up to active (1.0) when excited
+        // Target Alpha: dormant (0.135) up to active (1.0) when excited, fading with scroll
         const totalActivity = Math.min(1.0, effectiveEnergy * 0.75 + waveExcitation * 0.85 + proxExcitation * 0.80 + heartExcitation * 0.65);
-        const targetAlpha = 0.135 + totalActivity * 0.65;
+        const targetAlpha = (0.135 + totalActivity * 0.65) * scrollAlpha;
 
         // Silkier alpha transition
         p.currentAlpha += (targetAlpha - p.currentAlpha) * 0.035;
@@ -513,6 +523,220 @@
     }, { passive: true });
   }
 
+  /* ── Hero Scroll Fade ─────────────────────────────── */
+
+  function initHeroFade() {
+    const identity = document.querySelector('.hero-identity');
+    const header = document.getElementById('site-header');
+    const scrollInd = document.querySelector('.scroll-indicator');
+    const graphicBtn = document.querySelector('.graphic-info-btn');
+    if (!identity) return;
+
+    let ticking = false;
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const vh = window.innerHeight;
+          // Progress from 0 to 1 over the first 40% of viewport scroll
+          const progress = Math.min(1, scrollY / (vh * 0.4));
+
+          // Fade and shift hero text
+          identity.style.opacity = (1 - progress).toFixed(3);
+          identity.style.transform = `translateY(${-progress * 30}px)`;
+
+          // Fade header out
+          if (header) {
+            const headerProgress = Math.min(1, scrollY / (vh * 0.35));
+            header.style.opacity = (1 - headerProgress).toFixed(3);
+            header.style.pointerEvents = headerProgress > 0.5 ? 'none' : '';
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ── Approach Reveal ─────────────────────────────── */
+  function initApproachFade() {
+    const approachInner = document.querySelector('.approach-inner');
+    if (!approachInner) return;
+
+    let ticking = false;
+
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const rect = approachInner.getBoundingClientRect();
+          const vh = window.innerHeight;
+          
+          // Calculate opacity based on position in viewport
+          let opacity = 0;
+          
+          // Fade in when top is between 90% and 60% of viewport
+          if (rect.top <= vh * 0.9 && rect.bottom >= vh * 0.4) {
+             // Fully visible when top is above 60% and bottom is below 40%
+             if (rect.top <= vh * 0.6 && rect.bottom >= vh * 0.4) {
+                opacity = 1;
+             } 
+             // Fade in zone (from bottom)
+             else if (rect.top > vh * 0.6) {
+                opacity = 1 - ((rect.top - (vh * 0.6)) / (vh * 0.3));
+             }
+             // Fade out zone (to top)
+             else if (rect.bottom < vh * 0.4) {
+                opacity = rect.bottom / (vh * 0.4);
+             }
+          }
+          
+          // clamp
+          opacity = Math.max(0, Math.min(1, opacity));
+          
+          approachInner.style.opacity = opacity.toFixed(3);
+          // Optional slight parallax to complement the fade
+          const translateY = (1 - opacity) * 20;
+          approachInner.style.transform = `translateY(${translateY}px)`;
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Trigger once on load
+    onScroll();
+  }
+
+  /* ── Projects Reveal ─────────────────────────────── */
+
+  function initProjectsReveal() {
+    const section = document.querySelector('.projects');
+    if (!section) return;
+
+    const eyebrow = section.querySelector('.projects-eyebrow');
+    const cardsGrid = section.querySelector('.projects-grid');
+    const cards = Array.from(section.querySelectorAll('.project-card'));
+
+    if (prefersReducedMotion) {
+      if (eyebrow) eyebrow.classList.add('is-visible');
+      cards.forEach(c => c.classList.add('is-visible'));
+      return;
+    }
+
+    // Reveal the big title as soon as the section starts entering
+    if (eyebrow) {
+      const titleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            eyebrow.classList.add('is-visible');
+            titleObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05 });
+      titleObserver.observe(section);
+    }
+
+    // Reveal cards when the grid enters the viewport
+    if (cardsGrid) {
+      const cardsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            cards.forEach(c => c.classList.add('is-visible'));
+            cardsObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      cardsObserver.observe(cardsGrid);
+    }
+
+    // Reveal Decks section
+    const decksSection = document.querySelector('.decks');
+    if (decksSection) {
+      const decksEyebrow = decksSection.querySelector('.decks-eyebrow');
+      const decksGrid = decksSection.querySelector('.projects-grid');
+      const decksCards = Array.from(decksSection.querySelectorAll('.deck-wrapper'));
+
+      if (prefersReducedMotion) {
+        if (decksEyebrow) decksEyebrow.classList.add('is-visible');
+        decksCards.forEach(c => c.classList.add('is-visible'));
+      } else {
+        if (decksEyebrow) {
+          const decksTitleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                decksEyebrow.classList.add('is-visible');
+                decksTitleObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.05 });
+          decksTitleObserver.observe(decksSection);
+        }
+
+        if (decksGrid) {
+          const decksCardsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                decksCards.forEach(c => c.classList.add('is-visible'));
+                decksCardsObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.1 });
+          decksCardsObserver.observe(decksGrid);
+        }
+      }
+    }
+  }
+
+  /* ── Modal Logic ──────────────────────────────────── */
+  function initModal() {
+    const deckCards = document.querySelectorAll('.deck-card');
+    const modal = document.getElementById('deck-modal');
+    if (!modal || deckCards.length === 0) return;
+
+    const modalBackdrop = modal.querySelector('.modal-backdrop');
+    const modalClose = modal.querySelector('.modal-close');
+    const iframe = document.getElementById('deck-iframe');
+
+    function openModal(url) {
+      // Convert /view?usp=share_link to /preview for embedding
+      const previewUrl = url.replace(/\/view.*/, '/preview');
+      iframe.src = previewUrl;
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function closeModal() {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      // Wait for fade out transition to finish before clearing src to prevent visual glitch
+      setTimeout(() => {
+        iframe.src = '';
+      }, 400); 
+    }
+
+    deckCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(card.href);
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', closeModal);
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
+  }
+
   /* ── Boot ─────────────────────────────────────────── */
 
   function boot() {
@@ -520,6 +744,10 @@
     if (canvas) AtomicOrbitalEngine.init(canvas);
 
     initHeaderScroll();
+    initHeroFade();
+    initApproachFade();
+    initProjectsReveal();
+    initModal();
 
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', runEntrance);

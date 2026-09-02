@@ -20,10 +20,13 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,ROND@8..144,-10..0,25..150,400..500,0..100&display=swap" />
 
-  <link rel="stylesheet" href="style.css?v=2" />
+  <link rel="stylesheet" href="style.css?v=21" />
 </head>
 
 <body>
+
+  <!-- =================== FIXED PARTICLE CANVAS =================== -->
+  <canvas id="benzene-canvas" class="benzene-canvas" aria-hidden="true"></canvas>
 
   <!-- =================== HEADER / NAV =================== -->
   <header class="site-header" id="site-header" role="banner">
@@ -45,11 +48,8 @@
   <main id="main-content">
     <section class="hero" aria-label="Introduction">
 
-      <!-- Molecular / background layer -->
+      <!-- Gradient overlay for nav legibility -->
       <div class="hero-media" aria-hidden="true">
-        <!-- Benzene lattice canvas — driven by cursor in main.js -->
-        <canvas id="benzene-canvas" class="benzene-canvas" aria-hidden="true"></canvas>
-        <!-- Gradient overlay: top (nav legibility) + bottom (text legibility) -->
         <div class="hero-overlay" aria-hidden="true"></div>
       </div>
 
@@ -90,9 +90,203 @@
       </div>
 
     </section>
+
+    <!-- =================== MY APPROACH =================== -->
+    <section class="approach" id="approach" aria-label="My Approach">
+      <div class="approach-inner">
+        <h2 class="approach-title">My approach</h2>
+        <div class="approach-text">
+          <p>My understanding of the current tech world is that there are sufficient tools to do any specialized task that you want to do. You do not necessarily have to be a subject matter expert to get things done. Of course, being an expert gives you an edge over a random person doing it totally with AI, and this leads me to my next point: if you do not get used to these tools that are there to assist you, it will be tough to keep up. A certain level of efficiency is expected from a person in the tech world, and the value of that person is associated with the efficiency with which they operate. Now, with all the tools present in the market, that bar of expectations has risen.</p>
+          <p>I am also a firm believer in the idea that any hard skill can be learned, or I would say mastered, with a sufficient amount of time and effort. However, soft skills are essential to achieve great things in the long term. In the present scenario, I feel the relevance of soft skills is increasing. Working with AI tools is like managing a small, personal team of highly specialized individuals, and to get the most out of this team, the first thing you have to do is start managing yourself better and more efficiently.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================== PROJECTS =================== -->
+    <section class="projects" id="projects" aria-label="Recent Projects">
+
+      <div class="projects-eyebrow" aria-hidden="true">
+        <span class="eyebrow-label">Recent Projects</span>
+      </div>
+
+      <div class="projects-inner">
+        <div class="projects-grid">
+
+          <a href="https://github.com/imaginary-Shashank/Automated-SOA-Reconciliation"
+            class="project-card hover-slideshow-card slideshow-3" target="_blank" rel="noopener noreferrer" data-card-index="0">
+            <div class="hover-slideshow">
+              <img src="assets/soa_1.png" class="slide slide-1" alt="SOA Pipeline Configuration">
+              <img src="assets/soa_2.png" class="slide slide-2" alt="SOA Processing Logs">
+              <img src="assets/soa_3.png" class="slide slide-3" alt="SOA Completion Report">
+            </div>
+            <div class="hover-slideshow-overlay"></div>
+            <div class="card-content">
+              <div class="card-header">
+                <h3 class="card-title">Automated SOA Reconciliation</h3>
+                <span class="card-arrow" aria-hidden="true">→</span>
+              </div>
+              <p class="card-desc">Automates matching and reconciliation of Statement of Account records.</p>
+              <div class="card-meta">
+                <span class="card-lang"><span class="lang-dot lang-dot--python"></span>Python</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="https://github.com/imaginary-Shashank/Zero-Cost-b2b-Lead-Engine"
+            class="project-card" target="_blank" rel="noopener noreferrer" data-card-index="1">
+            <div class="card-header">
+              <h3 class="card-title">B2B Lead Engine</h3>
+              <span class="card-arrow" aria-hidden="true">→</span>
+            </div>
+            <p class="card-desc">Finds and deduplicates B2B leads using Google X-Ray search and SerpAPI.</p>
+            <div class="card-meta">
+              <span class="card-lang"><span class="lang-dot lang-dot--python"></span>Python</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/imaginary-Shashank/LinkedIn-connections-live-DB"
+            class="project-card hover-slideshow-card slideshow-4" target="_blank" rel="noopener noreferrer" data-card-index="2">
+            <div class="hover-slideshow">
+              <img src="assets/linkedin_1.png" class="slide slide-1" alt="LinkedIn Connections DB Dashboard">
+              <img src="assets/linkedin_2.png" class="slide slide-2" alt="Suppressed Client Accounts">
+              <img src="assets/linkedin_3.png" class="slide slide-3" alt="LinkedIn Data Configuration">
+              <img src="assets/linkedin_4.png" class="slide slide-4" alt="Network Intelligence Sync">
+            </div>
+            <div class="hover-slideshow-overlay"></div>
+            <div class="card-content">
+              <div class="card-header">
+                <h3 class="card-title">LinkedIn Connections Live DB</h3>
+                <span class="card-arrow" aria-hidden="true">→</span>
+              </div>
+              <p class="card-desc">Syncs LinkedIn export data into a live, searchable Google Sheets database.</p>
+              <div class="card-meta">
+                <span class="card-lang"><span class="lang-dot lang-dot--python"></span>Python</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- =================== PRODUCT DECKS =================== -->
+    <section class="decks" id="decks" aria-label="Strategy & Operations">
+      <div class="decks-eyebrow" aria-hidden="true">
+        <span class="eyebrow-label">Strategy & Operations</span>
+      </div>
+
+      <div class="decks-inner">
+        <div class="projects-grid">
+
+          <div class="deck-wrapper" data-card-index="0">
+            <a href="https://drive.google.com/file/d/1Kh3emzBIeKFZ5PwvXb4dEvoY2SZv-KkG/view?usp=share_link"
+              class="deck-card" target="_blank" rel="noopener noreferrer">
+              <img src="assets/design_hive.jpg" class="deck-image" alt="Circular Economy Solution for EV Battery Waste">
+              <div class="deck-overlay"></div>
+              <div class="deck-content">
+                <p class="deck-summary">A strategic design proposal addressing the environmental impact of improper EV battery disposal through a closed-loop recycling system. It features a concept for a modular, solar-powered battery swapping station paired with an AI-driven app to optimize second-life usage and sustainable energy management.</p>
+              </div>
+            </a>
+            <div class="deck-info">
+              <h3 class="card-title">Circular Economy Solution for EV Battery Waste</h3>
+              <div class="card-meta">
+                <span class="lang-dot lang-dot--deck"></span>
+                <span class="lang-label">SYSTEM DESIGN</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="deck-wrapper" data-card-index="1">
+            <a href="https://drive.google.com/file/d/1ccOMOC7i-rrQQyQEwNwSXf3x53vX3Qak/view?usp=share_link"
+              class="deck-card" target="_blank" rel="noopener noreferrer">
+              <img src="assets/toy_su.png" class="deck-image" alt="E-Commerce Marketplace Launch Strategy">
+              <div class="deck-overlay"></div>
+              <div class="deck-content">
+                <p class="deck-summary">A comprehensive go-to-market strategy designed to launch a culturally inspired toy brand across major Indian platforms like Amazon, Flipkart, and FirstCry. It outlines a phased rollout focusing on building visibility, driving traffic, and boosting conversions while leveraging platform-specific fulfillment and growth programs.</p>
+              </div>
+            </a>
+            <div class="deck-info">
+              <h3 class="card-title">E-Commerce Marketplace Launch Strategy</h3>
+              <div class="card-meta">
+                <span class="lang-dot lang-dot--deck"></span>
+                <span class="lang-label">GO-TO-MARKET STRATEGY</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="deck-wrapper" data-card-index="2">
+            <a href="https://drive.google.com/file/d/1UycHjVgjAXO_Ixd_cOrfyhoao31xaOzF/view?usp=share_link"
+              class="deck-card" target="_blank" rel="noopener noreferrer">
+              <img src="assets/ugc_production.jpg" class="deck-image" alt="Scalable UGC Production Workflow">
+              <div class="deck-overlay"></div>
+              <div class="deck-content">
+                <p class="deck-summary">An operational blueprint detailing a scalable pipeline to consistently produce 10 User-Generated Content (UGC) performance ads per day. The project maps out end-to-end production stages, team structuring, cost estimations, and mitigation strategies across creator, AI, and external production streams.</p>
+              </div>
+            </a>
+            <div class="deck-info">
+              <h3 class="card-title">Scalable UGC Production Workflow</h3>
+              <div class="card-meta">
+                <span class="lang-dot lang-dot--deck"></span>
+                <span class="lang-label">OPERATIONAL SCALING</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <script src="main.js"></script>
+  <!-- =================== FOOTER =================== -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <h2 class="footer-title">Let's build something<br>efficient together.</h2>
+        <div class="footer-links">
+          <a href="mailto:0709shashank@gmail.com" class="footer-link">
+            <span>Email</span>
+            <span class="link-arrow">↗</span>
+          </a>
+          <a href="https://www.linkedin.com/in/shashank-shekhar-11b6b822b/" class="footer-link" target="_blank" rel="noopener noreferrer">
+            <span>LinkedIn</span>
+            <span class="link-arrow">↗</span>
+          </a>
+          <a href="https://github.com/imaginary-Shashank" class="footer-link" target="_blank" rel="noopener noreferrer">
+            <span>GitHub</span>
+            <span class="link-arrow">↗</span>
+          </a>
+          <a href="https://www.instagram.com/susssshank/" class="footer-link" target="_blank" rel="noopener noreferrer">
+            <span>Instagram</span>
+            <span class="link-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Shashank Shekhar. All rights reserved.</p>
+        <p class="footer-credit">Strategy & Systems</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =================== DECK MODAL =================== -->
+  <div id="deck-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="modal-iframe-wrapper">
+        <iframe id="deck-iframe" src="" allow="autoplay" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js?v=8"></script>
 </body>
 
 </html>
