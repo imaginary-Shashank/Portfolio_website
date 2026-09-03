@@ -55,6 +55,9 @@
       time: 0,                  // Age of pulse
       speed: 0,                 // Pulse intensity
     };
+    
+    // 3D Explosion State
+    let blastPhase = 0;
 
     let rafId = null;
     let resizeTimer = null;
@@ -158,6 +161,12 @@
     /* ── Physics & Animation Update ────────────────────── */
 
     function update(t, dt) {
+      if (blastPhase > 0.001) {
+        blastPhase *= 0.975; // Slower decay for a majestic shatter and reform
+      } else {
+        blastPhase = 0;
+      }
+
       const scrollY = window.scrollY;
       // Cap the scroll effect at 1 screen height so the atom doesn't vanish on the 3rd section
       const scrollNorm = Math.min(scrollY / H, 1.0);
@@ -301,9 +310,41 @@
         heartDisp *= heartFactor;
         heartExcitation *= heartFactor;
 
+        // --- 3D EXPLOSION EFFECT ---
+        let expDispX = 0;
+        let expDispY = 0;
+        let expSizeMult = 1.0;
+        
+        if (blastPhase > 0.001) {
+          // 1. Z-axis perspective scaling (size increases as it flies "towards" us, but kept reasonable)
+          expSizeMult = 1.0 + Math.pow(blastPhase, 1.5) * 4.0;
+
+          // 2. Chaotic Pattern Disruption
+          // Mix radial push with a completely chaotic scatter angle to shatter the atom
+          const dx = restX - centerX;
+          const dy = restY - centerY;
+          const distToCenter = Math.hypot(dx, dy) || 1;
+          const pseudoRandomAngle = p.angle * 13.7 + p.baseSize * 111.3; 
+          
+          // 60% random direction, 40% outward radial
+          const dirX = (dx / distToCenter) * 0.4 + Math.cos(pseudoRandomAngle) * 0.6;
+          const dirY = (dy / distToCenter) * 0.4 + Math.sin(pseudoRandomAngle) * 0.6;
+          
+          // Massive force that pushes them far off their standard orbits
+          const pushForce = Math.pow(blastPhase, 1.1) * (distToCenter * 1.0 + 800.0);
+          
+          // 3. High frequency erratic jitter
+          const jitterAmp = blastPhase * 35.0; // Violent shaking
+          const jitterX = (Math.random() - 0.5) * jitterAmp;
+          const jitterY = (Math.random() - 0.5) * jitterAmp;
+
+          expDispX = dirX * pushForce + jitterX;
+          expDispY = dirY * pushForce + jitterY;
+        }
+
         // --- D. Position Assignment ---
-        p.x = restX + vibX + waveX + Math.cos(p.angle) * heartDisp;
-        p.y = restY + vibY + waveY + Math.sin(p.angle) * heartDisp;
+        p.x = restX + vibX + waveX + Math.cos(p.angle) * heartDisp + expDispX;
+        p.y = restY + vibY + waveY + Math.sin(p.angle) * heartDisp + expDispY;
 
         // --- E. Central Text Clearance (Smaller particle size near center text) ---
         const centerDist = Math.hypot(p.relX, p.relY);
@@ -312,18 +353,20 @@
         const centerSizeScale = 0.50 + 0.50 * Math.pow(centerNorm, 1.4);
 
         // Target Alpha: dormant (0.135) up to active (1.0) when excited, fading with scroll
-        const totalActivity = Math.min(1.0, effectiveEnergy * 0.75 + waveExcitation * 0.85 + proxExcitation * 0.80 + heartExcitation * 0.65);
-        const targetAlpha = (0.135 + totalActivity * 0.65) * scrollAlpha;
+        const totalActivity = Math.min(1.0, effectiveEnergy * 0.75 + waveExcitation * 0.85 + proxExcitation * 0.80 + heartExcitation * 0.65 + blastPhase);
+        const targetAlpha = Math.min(1.0, (0.135 + totalActivity * 0.65) * scrollAlpha + blastPhase); // Force high alpha on blast
 
-        // Silkier alpha transition
-        p.currentAlpha += (targetAlpha - p.currentAlpha) * 0.035;
+        // Faster alpha response during blast
+        const alphaSpeed = 0.035 + blastPhase * 0.2;
+        p.currentAlpha += (targetAlpha - p.currentAlpha) * alphaSpeed;
 
         // Size expansion under excitement multiplied by central clearance scaling
-        p.currentSize = p.baseSize * (1.0 + totalActivity * 0.35) * centerSizeScale;
+        p.currentSize = p.baseSize * (1.0 + totalActivity * 0.35) * centerSizeScale * expSizeMult;
 
         // Save state values for the firefly glow renderer
         p.waveExcitation = waveExcitation;
         p.heartExcitation = heartExcitation;
+        p.blastPhase = blastPhase;
       }
     }
 
@@ -347,7 +390,7 @@
         const { r, g, b } = p.color;
 
         // 1. Draw the glowing firefly halo (Subtle glow, increased by 20%)
-        const glowFactor = Math.min(1.0, p.waveExcitation * 1.5 + excitation * 0.38 + p.heartExcitation * 0.60) * 0.30;
+        const glowFactor = Math.min(1.0, p.waveExcitation * 1.5 + excitation * 0.38 + p.heartExcitation * 0.60 + p.blastPhase * 1.5) * 0.30;
         if (glowFactor > 0.01) {
           // Soft high-frequency firefly pulsation (increased by 20%)
           const flutter = Math.sin(t * 15.0 + p.vibPhase) * 0.30;
@@ -463,7 +506,12 @@
       }
     }
 
-    return { init };
+    function triggerBlast() {
+      blastPhase = 1.0;
+      window.scrollTo({ top: 0, behavior: 'smooth' }); // Glide up to see the explosion
+    }
+
+    return { init, triggerBlast };
   })();
 
   /* ═══════════════════════════════════════════════════════
@@ -760,6 +808,15 @@
   function boot() {
     const canvas = document.getElementById('benzene-canvas');
     if (canvas) AtomicOrbitalEngine.init(canvas);
+
+    // Bind top left logo to 3D Explosion Easter Egg
+    const wordmark = document.querySelector('.wordmark');
+    if (wordmark) {
+      wordmark.addEventListener('click', (e) => {
+        e.preventDefault();
+        AtomicOrbitalEngine.triggerBlast();
+      });
+    }
 
     initHeaderScroll();
     initHeroFade();
