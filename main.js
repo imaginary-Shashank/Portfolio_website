@@ -169,7 +169,7 @@
       const scrollAlpha = Math.max(0.015, 1 - scrollNorm * 0.45); // Fade with distance
 
       const centerX = W * 0.5;
-      const centerY = H * 0.5 - scrollY * 0.45;           // Atom center recedes upward
+      const centerY = H * 0.425 - scrollY * 0.45;         // Atom center aligned perfectly with 85dvh hero section
 
       // 1. Calculate cursor speed and smooth mouse position
       if (mouse.active) {
