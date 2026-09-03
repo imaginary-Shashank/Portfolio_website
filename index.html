@@ -20,7 +20,7 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,slnt,wdth,wght,ROND@8..144,-10..0,25..150,400..500,0..100&display=swap" />
 
-  <link rel="stylesheet" href="style.css?v=21" />
+  <link rel="stylesheet" href="style.css?v=22" />
 </head>
 
 <body>
@@ -36,10 +36,11 @@
       </a>
 
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="https://www.linkedin.com/in/shashank-shekhar-11b6b822b/" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="0">LinkedIn</a>
-        <a href="https://github.com/imaginary-Shashank" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="1">GitHub</a>
-        <a href="mailto:0709shashank@gmail.com" class="nav-link" data-nav-index="2">Gmail</a>
-        <a href="https://www.instagram.com/susssshank/" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="3">Instagram</a>
+        <a href="assets/Shashank_Shekhar_Resume.pdf" class="nav-link resume-btn open-modal-link" data-nav-index="0">Resume</a>
+        <a href="https://www.linkedin.com/in/shashank-shekhar-11b6b822b/" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="1">LinkedIn</a>
+        <a href="https://github.com/imaginary-Shashank" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="2">GitHub</a>
+        <a href="mailto:0709shashank@gmail.com" class="nav-link" data-nav-index="3">Gmail</a>
+        <a href="https://www.instagram.com/susssshank/" class="nav-link" target="_blank" rel="noopener noreferrer" data-nav-index="4">Instagram</a>
       </nav>
     </div>
   </header>
@@ -274,19 +275,28 @@
   <div id="deck-modal" class="modal" aria-hidden="true">
     <div class="modal-backdrop"></div>
     <div class="modal-content">
-      <button class="modal-close" aria-label="Close modal">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
+      <div class="modal-actions">
+        <a id="modal-download-btn" href="" download class="modal-btn" aria-label="Download PDF" title="Download PDF">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </a>
+        <button class="modal-close modal-btn" aria-label="Close modal" title="Close">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
       <div class="modal-iframe-wrapper">
         <iframe id="deck-iframe" src="" allow="autoplay" frameborder="0"></iframe>
       </div>
     </div>
   </div>
 
-  <script src="main.js?v=8"></script>
+  <script src="main.js?v=9"></script>
 </body>
 
 </html>

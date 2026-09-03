@@ -695,18 +695,36 @@
 
   /* ── Modal Logic ──────────────────────────────────── */
   function initModal() {
-    const deckCards = document.querySelectorAll('.deck-card');
     const modal = document.getElementById('deck-modal');
-    if (!modal || deckCards.length === 0) return;
+    const triggerCards = Array.from(document.querySelectorAll('.deck-card, .open-modal-link'));
+    if (!modal || triggerCards.length === 0) return;
 
     const modalBackdrop = modal.querySelector('.modal-backdrop');
     const modalClose = modal.querySelector('.modal-close');
+    const modalDownloadBtn = document.getElementById('modal-download-btn');
     const iframe = document.getElementById('deck-iframe');
 
     function openModal(url) {
-      // Convert /view?usp=share_link to /preview for embedding
+      // Convert /view?usp=share_link to /preview for embedding (only affects Google Drive URLs)
       const previewUrl = url.replace(/\/view.*/, '/preview');
       iframe.src = previewUrl;
+      
+      // Handle Download button logic
+      if (modalDownloadBtn) {
+        if (url.includes('drive.google.com')) {
+          // Extract file ID for direct download from Drive
+          const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+          if (match && match[1]) {
+            modalDownloadBtn.href = `https://drive.google.com/uc?export=download&id=${match[1]}`;
+          } else {
+            modalDownloadBtn.href = url; // Fallback
+          }
+        } else {
+          // It's a local file like our Resume PDF
+          modalDownloadBtn.href = url;
+        }
+      }
+
       modal.classList.add('is-open');
       document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
@@ -720,7 +738,7 @@
       }, 400); 
     }
 
-    deckCards.forEach(card => {
+    triggerCards.forEach(card => {
       card.addEventListener('click', (e) => {
         e.preventDefault();
         openModal(card.href);
